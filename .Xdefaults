@@ -1,0 +1,52 @@
+!URxvt settings{
+!Colors lifted from Solarized (http://ethanschoonover.com/solarized)
+
+!Title {
+URxvt.title:			rxvt-unicode
+URxvt.iconName:			urxvt
+Urxvt.termName:			rxvt-unicode
+!}
+
+!Visual {
+URxvt*borderless:		true
+URxvt*externalBorder:		0
+URxvt*internalBorder:		0
+URxvt*visualBell:		false
+URxvt*highlightSelection:	true
+URxvt*buffered:			true
+URxvt*saveLines:		5000
+!}
+
+!Color Settings {
+!Color Scheme
+#include "/home/kirill/.xcolors/solarized_dark"
+URxvt.depht:			32
+URxvt.dynamicColors:		on
+!}
+
+!Scroll {
+URxvt.jumpScroll:		true
+URxvt.scrollBar:		false
+URxvt.scrollBar_right:		true
+URxvt.scrollstyle:		plain
+URxvt.scrollColor:		#839496
+URxvt.secondaryScroll:		true
+URxvt.scrollWithBuffer:		true
+URxvt.scrollTtyKeypress:	true
+URxvt.scrollTtyOutput:		false
+URxvt.mouseWheelScrollPage:	false
+!}
+
+!Fonts {
+URxvt.font:		xft:terminus:size=10
+URxvt.lineSpace:		0
+URxvt.letterSpace:		0
+!}
+
+!Cursor {
+URxvt.cursorBlink:	true
+URxvt.cursorUnderline:	true	
+!}
+
+
+!}
