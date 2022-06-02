@@ -1,1 +1,1 @@
-# Configuration files fo some progtams
+# Configuration files for some progtams
