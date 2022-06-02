@@ -1,1 +1,1 @@
-# Configuration files for some progtams
+# Configuration files for some programs
