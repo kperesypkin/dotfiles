@@ -64,7 +64,7 @@ URxvt.secondaryScroll:	 0
 URxvt.scrollTtyOutput:	 false
 URxvt.scrollWithBuffer:	 true
 URxvt.scrollTtyKeypress: true
-URxvt.perl-ext-common:   default,tabbed
+! URxvt.perl-ext-common:   default,tabbed
 Xft*dpi:       96
 Xft*antialias: True
 Xft*hinting:   Full

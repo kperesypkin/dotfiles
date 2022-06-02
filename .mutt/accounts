@@ -1,0 +1,6 @@
+# Fill and encrypt file with gpg
+set my_name = ''
+set my_gmail_user = ''
+set my_gmail_pass = ''
+set my_yandex_user = ''
+set my_yandex_pass = ''
