@@ -1,0 +1,69 @@
+! -----------------------------------------------------------------------------
+! File: gruvbox-dark.xresources
+! Description: Retro groove colorscheme generalized
+! Author: morhetz <morhetz@gmail.com>
+! Source: https://github.com/morhetz/gruvbox-generalized
+! Last Modified: 6 Sep 2014
+! -----------------------------------------------------------------------------
+
+! hard contrast: URxvt.background: #1d2021
+URxvt.background: #282828
+! soft contrast: URxvt.background: #32302f
+URxvt.foreground: #ebdbb2
+! Black + DarkGrey
+URxvt.color0:  #282828
+URxvt.color8:  #928374
+! DarkRed + Red
+URxvt.color1:  #cc241d
+URxvt.color9:  #fb4934
+! DarkGreen + Green
+URxvt.color2:  #98971a
+URxvt.color10: #b8bb26
+! DarkYellow + Yellow
+URxvt.color3:  #d79921
+URxvt.color11: #fabd2f
+! DarkBlue + Blue
+URxvt.color4:  #458588
+URxvt.color12: #83a598
+! DarkMagenta + Magenta
+URxvt.color5:  #b16286
+URxvt.color13: #d3869b
+! DarkCyan + Cyan
+URxvt.color6:  #689d6a
+URxvt.color14: #8ec07c
+! LightGrey + White
+URxvt.color7:  #a89984
+URxvt.color15: #ebdbb2
+
+!Urxvt settings
+URxvt.title:             Terminal
+URxvt.iconFile:          /usr/share/icons/Yaru/48x48/apps/terminal-app.png
+URxvt.depth:		     24
+Urxvt.buffered: 		 True
+URxvt.font:     		 xft:Hack:pixelsize=16:antialias=true:hinting=true
+URxvt.boldFont: 		 xft:Hack:bold:pixelsize=16:antialias=true:hinting=true
+URxvt.italicdFont: 		 xft:Hack:italic:pixelsize=16:antialias=true:hinting=true
+URxvt.boldItalicFont: 	 xft:Hack:bold italic:pixelsize=16:antialias=true:hinting=true
+URxvt.scrollBar:		 false
+URxvt.saveLines:		 65535
+URxvt.letterSpace:		 -1 
+URxvt.secondaryScreen:	 1
+URxvt.secondaryScroll:	 0
+URxvt.scrollTtyOutput:	 false
+URxvt.scrollWithBuffer:	 true
+URxvt.scrollTtyKeypress: true
+URxvt.urgentOnBell:      false
+URxvt.visualBell:        false
+URxvt.cursorBlink:       true
+URxvt.cursorUnderline:   true
+URxvt.fading:            20
+URxvt.colorMode:         on
+URxvt.boldColors:        on
+URxvt.colorUL:           #d79921 
+URxvt.underlineColor:    #d79921
+URxvt.url-launcher:		 /usr/bin/firefox
+URxvt.underlineURLs:	 true
+URxvt.perl-ext-common:   default,tabbed
+Xft*dpi:       96
+Xft*antialias: True
+Xft*hinting:   Full
