@@ -13,8 +13,9 @@
       display-time-interval 10
       display-time-default-load-average nil)
 (display-time)
+
 ;;; Display battery charge in percent
-(display-battery-mode 1)
+;(display-battery-mode 1)
 
 ;;; Цветные скобочки
 (use-package
@@ -41,6 +42,7 @@
 (setq-default c-basic-offset 4 c-indent-level 4 indent-tabs-mode nil) ;; TAB'ы не нужны
 (setq-default save-place t) ;; Помнить, где был курсор в прошлый раз
 (setq ring-bell-function 'ignore) ;; Switch off the bell
+
 ;;; Нажатие Insert больше не включает режим замены
 (define-key global-map [(insert)] nil)
 
@@ -64,7 +66,7 @@
 ;; Пробелы после номеров строк
 (if window-system
     (progn)
-  (setq linum-format "%4d\u2502 "))
+  (setq linum-format "%4d \u2502 "))
 
 (menu-bar-mode -1)      ;;; А меню - никогда
 (scroll-bar-mode 1)    ;;; Скроллбар нужен
@@ -78,11 +80,6 @@
 ;; Electric pair mode
 (electric-pair-mode 1)
 
-;; Иконки в статус-баре
-(use-package
-  mode-icons
-  :config (mode-icons-mode 0))
-
 ;; Показывать отступы во всех режимах
 (use-package
   indent-guide
@@ -92,5 +89,8 @@
 (use-package
   undo-tree
   :config (global-undo-tree-mode 1))
+
+;; Папка для сохранения файлов дерева отмены
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 
 ;;; personal.el ends here

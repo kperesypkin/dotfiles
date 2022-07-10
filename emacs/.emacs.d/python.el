@@ -41,15 +41,15 @@
 
 (use-package
   pyvenv
-  :config (defalias 'workon 'pyvenv-workon))
+  :config (progn
+            (defalias 'workon 'pyvenv-workon)
+            (defalias 'activate 'pyvenv-activate)
+            (defalias 'deactivate 'pyvenv-deactivate)))
 
 (use-package
   py-isort
   :config (setq py-isort-options '("-sl"))
   :init (progn (add-hook 'python-mode-hook 'py-isort-before-save)))
 
-(use-package
-  company-anaconda
-  :config (add-to-list 'company-backends 'company-anaconda))
 
 ;;; python.el ends here

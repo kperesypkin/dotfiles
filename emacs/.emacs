@@ -1,6 +1,8 @@
-;; package --- Summary
-;; Commentary:
-;; Main EMACS config file, load settings from parts
+;;; package --- Summary
+;;; Commentary:
+;;; Main EMACS config file, load settings from parts
+
+;;; Code:
 
 ;; System-type definition
 (defun system-is-linux()
@@ -14,11 +16,17 @@
   (unless (server-running-p)
     (server-start)))
 
+;; Removes delay while loading custom font
+(modify-frame-parameters nil '((wait-for-wm . nil)))
+
 ;; Main section
 ;;; Fonts settings
 (set-face-attribute 'default nil :height 120)
-(when (member "Monospace" (font-family-list))
-  (set-face-attribute 'default nil :font "Monospace"))
+(when (member "Hack" (font-family-list))
+  (set-face-attribute 'default nil :font "Hack")) ;Monospace
+
+;; Start maximized
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;;; Hotkeys enable in other keyboard layouts
 (defun cfg:reverse-input-method (input-method)
@@ -45,18 +53,6 @@
       (activate-input-method current))))
 
 (cfg:reverse-input-method 'russian-computer)
-
-;; Folding blocks of code
-(defvar hs-special-modes-alist
-  (mapcar 'purecopy
-  '((c-mode "{" "}" "/[*/]" nil nil)
-    (c++-mode "{" "}" "/[*/]" nil nil)
-    (js-mode "{" "}" "/[*/]" nil nil)
-    (python-mode "{" "}" "/[*/]" nil nil)
-    (elisp-mode "(" ")" nil))))
-
-(require 'hideshow)
-(global-set-key (kbd "M-p") 'hs-toggle-hiding)
 
 ;; Packages
 (require 'package)
@@ -92,12 +88,22 @@
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
 
-;;; Configuration parts
-(load-user-file "neotree.el")
+;;; Части конфигурации. Порядок не имеет принципиального значения,
+;;; однако я рекомендую некоторые базовые вещи помещать в начало,
+;;; чтобы не было необходимости вспоминать базовые команды EMACS
+;;; если в результате улучшения сломается один из базовых конфигов.
 (load-user-file "personal.el")
+(load-user-file "dashboard.el")
+(load-user-file "neotree.el")
 (load-user-file "themes.el")
 (load-user-file "company.el")
 (load-user-file "python.el")
+(load-user-file "flycheck.el")
+(load-user-file "haskell.el")
+(load-user-file "org.el")
+(load-user-file "projectile.el")
+(load-user-file "modeline.el")
+
 
 ;;; А здесь EMACS хранит настройки, задаваемые через customize
 (setq custom-file "~/.emacs.d/customize.el")
