@@ -1,0 +1,1 @@
+("~/develop/dotfiles/" "~/develop/work/applications_table/v_0.0.2/merge_tables_february/" "~/develop/learning_python/gui_3d_party/weather/" "~/develop/learning_python/sql/T-SQL/" "~/develop/roughlike_game/" "~/Downloads/UltimatePygameIntro/" "~/develop/game/")

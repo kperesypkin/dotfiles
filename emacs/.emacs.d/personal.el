@@ -27,7 +27,6 @@
 (setq scroll-step               1) ;; one line
 (setq scroll-margin            10) ;; scroll buffer to 10 lines at going to last line
 (setq scroll-conservatively 10000)
-(setq directory-free-space-args "-Pm")
 
 ;; Подсветка результатов поиска и всё такое
 (setq search-highlight        t)

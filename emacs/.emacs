@@ -6,8 +6,10 @@
 
 ;; System-type definition
 (defun system-is-linux()
+  "Check if the system is GNU/linux."
   (string-equal system-type "gnu/linux"))
 (defun system-is-windows()
+  "Check if the system is Windows."
   (string-equal system-type "windows-nt"))
 
 ;; Start EMACS as a server in linux
@@ -21,7 +23,7 @@
 
 ;; Main section
 ;;; Fonts settings
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 140)
 (when (member "Hack" (font-family-list))
   (set-face-attribute 'default nil :font "Hack")) ;Monospace
 
@@ -84,6 +86,7 @@
 
 ;;; Функция для загрузки настроек из указанного файла.
 (defun load-user-file (file)
+  "Load user configuration FILE."
   (interactive "f")
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir)))
