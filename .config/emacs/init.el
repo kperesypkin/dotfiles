@@ -491,12 +491,29 @@ _l_: increase horizontally
     (flycheck-rust-setup)
     (flycheck-mode)))
 
+;; Markdown
+(use-package markdown-mode
+  :custom
+  (markdown-mode gfm-mode)
+  
+  :mode
+  ("README.*\\.md\\'" . gfm-mode)
+  ("\\.md\\'" . markdown-mode)
+  ("\\.markdown\\'" . markdown-mode)
+
+  :hook
+  (markdown-mode . yas-minor-mode)
+  (markdown-mode . smartparens-mode)
+
+  :custom
+  (markdown-header-scaling t))
+
 ;; TOML
 (use-package toml-mode
-    :mode "\\.toml\\'"
+  :mode "\\.toml\\'"
 
-    :hook
-    (toml-mode . smartparens-mode))
+  :hook
+  (toml-mode . smartparens-mode))
 
 ;; CSV
 (use-package csv-mode
@@ -507,6 +524,13 @@ _l_: increase horizontally
   :mode
   ("\\.sh\\'" . shell-script-mode)
   ("\\.bash\\'" . shell-script-mode))
+
+;; VimScript
+(use-package vimrc-mode
+  :mode "\\.vim\\(rc\\)?\\'"
+
+  :hook
+  (vimrc-mode . smartparens-mode))
 
 ;;; IDE
 ;; Company (autocomplete)
