@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t -*-
 ;;; Package --- Summary
-;;; Comment:
-;;; Settings for Emacs
+;;; Comment: Settings for Emacs
 
 ;;; Code:
 
@@ -10,6 +9,18 @@
 
 ;;; Start maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;;; PATH
+(setenv "PYTHONPATH" "/usr/local/bin")
+(setenv "HOME" "/home/kirill")
+
+(mapc
+ #'(lambda (p)
+     (when (file-directory-p p)
+       (add-to-list 'exec-path p)))
+ '("~/.local/bin"
+   "~/.ghcup/bin"
+   "~/.stack/programs/x86_64-linux/ghc-tinfo6-9.0.2/bin"))
 
 ;;; Make a shortcut for init.el
 ;;; and a reload function
@@ -29,7 +40,7 @@
 ;;; Packages
 (require 'package)
 
-;; Packages sources
+;;;; Packages sources
 (setq package-archives
       `(("melpa" . "https://melpa.org/packages/")
         ,@package-archives))
@@ -39,7 +50,7 @@
       '("gnutls-cli --x509cafile /etc/ssl/certs/ca-certificates.crt -p %p %h"))
 (package-initialize)
 
-;; If 'gnu-epla-keyring-update' is not installed, download and install it
+;;;; If 'gnu-epla-keyring-update' is not installed, download and install it
 (unless (package-installed-p 'gnu-elpa-keyring-update)
   (setq-default package-check-signature 'allow-unsigned)
   (setq-default package-unsigned-archives '("gnu"))
@@ -49,7 +60,7 @@
 
 (require 'gnu-elpa-keyring-update)
 
-;; If 'use-package' is not installed, download and install it
+;;;; If 'use-package' is not installed, download and install it
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -66,6 +77,12 @@
   :config
   (put 'use-package 'lisp-indent-function 1))
 
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 (use-package diminish)
 (use-package gcmh
   :diminish
@@ -73,7 +90,7 @@
   :init
   (add-hook 'after-init-hook 'gcmh-mode))
 
-;;; Simple use-package wrapper
+;;;; Simple use-package wrapper
 (defmacro def-package (name &rest body)
   "Defines a virtual package."
   `(use-package ,name
@@ -86,8 +103,8 @@
 (defmacro setup-package (name &rest body)
   "Configures an internal package (NAME/BODY)."
   `(use-package ,name
-	 :ensure nil
-	 ,@body))
+     :ensure nil
+     ,@body))
 
 (put 'setup-package 'lisp-indent-function 1)
 
@@ -104,7 +121,7 @@
 (setup-package emacs
   :init
   (defalias 'yes-or-no-p 'y-or-n-p)
-  
+
   :custom
   (inhibit-startup-screen t "No startup screen")
   (initial-scratch-message nil)
@@ -135,33 +152,35 @@
   (menu-bar-mode nil)
   (frame-title-format "Emacs: %b")
   (fringe-mode '(4 . 0))
-  ;; Cursor
+  ;; Columns and lines numbers
   (line-number-mode t)
   (column-number-mode t)
+  ;; Cursor
   (blink-cursor-mode t)
   (x-stretch-cursor t)
+  (cursor-type 'bar)
   (shift-select-mode nil "No selection with <shift>")
   ;; Exit confirmation
-  (kill-emacs-query-functions
-   (cons (lambda () (yes-or-no-p "Really Quit Emacs? "))
-         kill-emacs-query-functions))
+  ;; (kill-emacs-query-functions
+  ;;  (cons (lambda () (yes-or-no-p "Really Quit Emacs? "))
+  ;;        kill-emacs-query-functions))
 
   :config
-  (global-prettify-symbols-mode)
+  (setq global-prettify-symbols-mode nil)
+  (setq default-cursor-type 'bar)
   (prefer-coding-system 'utf-8)
   (put 'overwrite-mode 'disabled t)
 
   :hook
   (before-save-hook . delete-trailing-whitespace))
 
-;;; Main section
-;;; Fonts settings
-;; (set-face-attribute 'default nil :height 120)
-;; (when (member "Hack" (font-family-list))
-;;   (set-face-attribute 'default nil :font "Hack"))
-
 ;;; UI
-;;; Faces
+;;;; Icons
+;;;; After installation run 'M-x all-the-icons-install-fonts'
+(use-package all-the-icons
+  :if (display-graphic-p))
+
+;;;; Faces
 (setup-package faces
   :diminish (buffer-face-mode "")
 
@@ -170,17 +189,16 @@
 
   :custom
   (face-font-family-alternatives
-   '(("Hack" "Iosevka Term" "Ubuntu Mono" "fixed")))
-  
+   '(("Fira Code" "Hack" "Iosevka Term" "Ubuntu Mono")))
 
   :custom-face
-  (variable-pitch ((t (:family "Hack" :height ,my/font-height))))
-  (fixed-pitch ((t (:family "Hack" :height ,my/font-height))))
-  (default ((t (:family "Hack" :height ,my/font-height))))
-  (mode-line ((t (:height 0.9))))
-  (mode-line-inactive ((t (:height 0.9)))))
+  (variable-pitch ((t (:family "Liberation Sans" :height ,my/font-height))))
+  (fixed-pitch ((t (:family "Fira Code" :height ,my/font-height))))
+  (default ((t (:family "Fira Code" :height ,my/font-height :weight normal))))
+  (mode-line ((t (:height 0.8))))
+  (mode-line-inactive ((t (:height 0.8)))))
 
-;; Whitespaces
+;;;; Whitespaces
 (setup-package whitespace
   :diminish
 
@@ -196,21 +214,21 @@
   (prog-mode . my/whitespace-prog-mode)
 
   :custom-face
-  (whitespace-line ((t (:background nil :underline (:color "Red1" :style wave) :weight bold))))
+  (whitespace-line ((t (:background nil :foreground nil :underline (:color "Red1" :style wave) :weight normal))))
 
   :custom
   (indent-tabs-mode nil)
   (tab-width 4)
   (mode-require-final-newline nil))
 
-;; Uniquify buffer names
+;;;; Uniquify buffer names
 (setup-package uniquify
   :custom
   (uniquify-strip-common-suffix t)
   (uniquify-after-kill-buffer-p t)
   (uniquify-buffer-name-style 'post-forward-angle-brackets))
 
-;; Secondary buffers highlight
+;;;; Secondary buffers highlight
 (use-package solaire-mode
   :config
   (setq solaire-mode-real-buffer-fn
@@ -220,39 +238,35 @@
               (derived-mode-p 'text-mode))))
   (solaire-global-mode))
 
-;; Highlights newlines
-(use-package volatile-highlights
+;;;; Highlight indentation
+(use-package highlight-indent-guides
   :diminish
-
+  
+  :hook
+  (prog-mode . highlight-indent-guides-mode)
+  
   :config
-  (volatile-highlights-mode 1))
-
-;; Highlight indentation
-(use-package highlight-indentation
-  :diminish
-
-  :commands
-  (highlight-indentation-mode))
-
+  (setq highlight-indent-guides-method 'bitmap))
+  
 ;;; Selection, indentation, quotes and comments
-;; Expand region selection
+;;;; Expand region selection
 (use-package expand-region
   :bind
   ("M-]" . er/expand-region)
   ("M-[" . er/contract-region))
 
-;; Smart commenting
+;;;; Smart commenting
 (use-package comment-dwim-2
   :bind
   ("M-;" . comment-dwim-2))
 
-;; Indentation
+;;;; Indentation
 (use-package aggressive-indent
   :commands (aggressive-indent-mode)
 
-  :diminish " AInd")
+  :diminish " AI")
 
-;; Quotes
+;;;; Quotes
 (use-package cycle-quotes
   :bind
   (:map
@@ -260,7 +274,7 @@
    ("q" . cycle-quotes)))
 
 ;;; Keyboard (bindings, settings, etc.)
-;; Reverse input method
+;;;; Reverse input method
 (use-package reverse-im
   :demand
 
@@ -269,13 +283,13 @@
   :config
   (reverse-im-activate "russian-computer"))
 
-;; Disable <insert> key
+;;;; Disable <insert> key
 (define-key global-map [(insert)] nil)
 
-;; Hydra
+;;;; Hydra
 (use-package hydra)
 
-;; Which key
+;;;; Which key
 (use-package which-key
   :demand
 
@@ -292,7 +306,7 @@
   :config
   (which-key-mode))
 
-;; Discover my major
+;;;; Discover my major
 (use-package discover-my-major
   :commands
   (discover-my-major discover-my-mode)
@@ -301,14 +315,14 @@
   ("C-h C-m" . discover-my-major))
 
 ;;; Buffers and windows
-;; Autoreload buffer at file changes
+;;;; Autoreload buffer at file changes
 (setup-package autorevert
   :diminish auto-revert-mode
 
   :config
   (global-auto-revert-mode t))
 
-;; Change windows size
+;;;; Change windows size
 (def-package my-window-sizing
   :preface
   (defhydra hydra-window-sizing (:hint nil)
@@ -329,9 +343,9 @@ _l_: increase horizontally
     ("q" nil))
 
   :bind
-  ("C-x 4 w" . 'hydra-window-sizing/body)) 
+  ("C-x 4 w" . 'hydra-window-sizing/body))
 
-;; Switch windows
+;;;; Switch windows
 (use-package ace-window
   :bind
   ("M-o" . ace-window)
@@ -339,26 +353,33 @@ _l_: increase horizontally
   :custom
   (aw-scope 'frame))
 
-;; Fullframe
+;;;; Fullframe
 (use-package fullframe
   :config
   (fullframe list-packages quit-window)
   (fullframe package-list-packages quit-window))
 
 ;;; Themes
-(use-package color-theme-sanityinc-tomorrow
+(use-package doom-themes
   :ensure t
-
   :config
-  (load-theme 'sanityinc-tomorrow-eighties t))
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-monokai-classic t)
+  (doom-themes-visual-bell-config)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
 
-;; Modeline
+;;;; Modeline
+;; (use-package doom-modeline
+;;   :hook (after-init . doom-modeline-mode))
+
 (use-package simple-modeline
   :hook
   (after-init . simple-modeline-mode))
 
 ;;; Parens & delimiters
-;; SmartParens & wrapping
+;;;; SmartParens & wrapping
 (use-package smartparens
   :diminish " SP"
 
@@ -369,8 +390,9 @@ _l_: increase horizontally
 
   :hook
   (smartparens-mode . my-no-electric-with-startparens)
-  
+
   :bind
+  
   (:map
    smartparens-mode-map
    ("M-J". sp-split-sexp)
@@ -386,12 +408,35 @@ _l_: increase horizontally
   (require 'smartparens-config)
   (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil))
 
-;; Colorful delimiters
+;;;; Neotree
+(use-package neotree
+  :init
+  (setq neo-window-width 35)
+
+  :bind
+  ("<f8>" . neotree-toggle)
+
+  :config
+  (setq neo-smart-open t)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
+;;;; Undo tree
+(use-package undo-tree
+  :diminish
+
+  :hook
+  (after-init . global-undo-tree-mode)
+
+  :config
+  (setq undo-tree-history-directory-alist
+        '(("." . "~/.config/emacs/undo"))))
+
+;;;; Colorful delimiters
 (use-package rainbow-delimiters
   :hook
   (prog-mode . rainbow-delimiters-mode))
 
-;;; TODO/FIXME/etc keyword highlight
+;;;;; TODO/FIXME/etc keyword highlight
 (use-package hl-todo
   :demand
 
@@ -410,29 +455,31 @@ _l_: increase horizontally
   :bind
   ("M-s t" . hl-todo-occur))
 
-;;; ElDoc
+;;;; ElDoc
 (setup-package eldoc
-  :diminish eldoc-mode)
+  :diminish)
 
 ;;; Languages
-;; LSP Eglot
+;;;; LSP Eglot
 (use-package eglot
   :commands (eglot)
 
   :config
-  (add-to-list 'eglot-server-programs '(python-mode . ("pylsp")))
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("pylsp")))
 
   :hook
   (python-mode . eglot-ensure)
-  (rust-mode . eglot-ensure))
+  (rust-mode . eglot-ensure)
+  (haskell-mode . eglot-ensure))
 
-;; ELisp
+;;;; ELisp
 (setup-package elisp-mode
   :hook
   (emacs-lisp-mode . eldoc-mode)
   (emacs-lisp-mode . aggressive-indent-mode))
 
-;; Python
+;;;; Python
 (use-package python
   :mode
   ("\\.py\\'" . python-mode)
@@ -440,14 +487,39 @@ _l_: increase horizontally
   :hook
   (python-mode . smartparens-mode)
   (python-mode . flycheck-mode)
-  (python-mode . aggressive-indent-mode)
-  
-  :bind
-  (:map
-   python-mode-map
-   ("C-c C-c" . compile)))
+  ;(python-mode . aggressive-indent-mode)
 
-;; Haskell
+  :config
+  (setq-default python-indent-offset 4))
+
+(use-package pyvenv
+  :config
+  (progn
+    (defalias 'workon 'pyvenv-workon)
+    (defalias 'activate 'pyvenv-activate)
+    (defalias 'deactivate 'pyvenv-deactivate))
+  (pyvenv-mode t)
+
+  ;; Set correct Python interpreter
+  (setq pyvenv-post-activate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
+  (setq pyvenv-post-deactivate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter "python3")))))
+
+(use-package py-autopep8
+  :hook
+  (python-mode . py-autopep8-mode))
+
+(use-package py-isort
+  :hook
+  (python-mode . py-isort-before-save)
+  
+  :config
+  (setq py-isort-options '("-sl")))
+
+;;;; Haskell
 (use-package haskell-mode
   :diminish haskell-mode
 
@@ -472,7 +544,7 @@ _l_: increase horizontally
 (use-package inf-haskell
   :ensure nil)
 
-;; Rust
+;;;; Rust
 (use-package rust-mode
   :mode
   ("\\.rs\\'" . rust-mode)
@@ -491,11 +563,11 @@ _l_: increase horizontally
     (flycheck-rust-setup)
     (flycheck-mode)))
 
-;; Markdown
+;;;; Markdown
 (use-package markdown-mode
   :custom
   (markdown-mode gfm-mode)
-  
+
   :mode
   ("README.*\\.md\\'" . gfm-mode)
   ("\\.md\\'" . markdown-mode)
@@ -508,24 +580,24 @@ _l_: increase horizontally
   :custom
   (markdown-header-scaling t))
 
-;; TOML
+;;;; TOML
 (use-package toml-mode
   :mode "\\.toml\\'"
 
   :hook
   (toml-mode . smartparens-mode))
 
-;; CSV
+;;;; CSV
 (use-package csv-mode
     :mode "\\.[Cc][Ss][Vv]\\'")
 
-;; Shell
+;;;; Shell
 (setup-package sh-script
   :mode
   ("\\.sh\\'" . shell-script-mode)
   ("\\.bash\\'" . shell-script-mode))
 
-;; VimScript
+;;;; VimScript
 (use-package vimrc-mode
   :mode "\\.vim\\(rc\\)?\\'"
 
@@ -533,7 +605,25 @@ _l_: increase horizontally
   (vimrc-mode . smartparens-mode))
 
 ;;; IDE
-;; Company (autocomplete)
+;;;; Autocomplete and abbreviation
+(setup-package abbrev
+  :diminish)
+
+(setup-package dabbrev
+  :commands (dabbrev-expand dabbrev-completion)
+
+  :custom
+  (dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
+  (dabbrev-abbrev-skip-leading-regexp "\\$\\|\\*\\|/\\|=")
+  (dabbrev-backward-only nil)
+  (dabbrev-case-distinction nil)
+  (dabbrev-case-fold-search t)
+  (dabbrev-case-replace nil)
+  (dabbrev-check-other-buffers t)
+  (dabbrev-eliminate-newlines nil)
+  (dabbrev-upcase-means-case-search t))
+
+;;;; Company (autocomplete)
 (use-package company
   :demand
 
@@ -581,7 +671,7 @@ _l_: increase horizontally
    company-active-map
    ("C-d" . company-quickhelp-manual-begin)))
 
-;; Ivy
+;;;; Ivy
 (use-package ivy
   :demand
 
@@ -637,7 +727,37 @@ _l_: increase horizontally
 (use-package flx)
 (use-package ivy-hydra)
 
-;; Yasnippet
+;;;; Projectile
+(use-package projectile
+  :custom
+  (projectile-keymap-prefix (kbd "C-c p"))
+  (projectile-mode-line-function
+   (lambda () (format " [%s]" (projectile-project-name)))))
+
+(use-package counsel-projectile
+  :after (projectile counsel ivy)
+
+  :custom
+  (projectile-completion-system 'ivy)
+
+  :hook
+  (after-init . counsel-projectile-mode))
+
+(use-package projectile-ripgrep
+  :if (package-installed-p 'ripgrep)
+
+  :after (projectile)
+
+  :bind
+  (:map
+   projectile-command-map
+   ("s r" . projectile-ripgrep)))
+
+(put 'projectile-tags-file-name 'safe-local-variable #'stringp)
+(put 'projectile-globally-ignored-files 'safe-local-variable #'listp)
+(put 'projectile-globally-ignored-directories 'safe-local-variable #'listp)
+
+;;;; Yasnippet
 (use-package yasnippet
   :diminish (yas-minor-mode . " Y")
 
@@ -653,22 +773,22 @@ _l_: increase horizontally
   :config
   (unbind-key "<tab>" yas-minor-mode-map)
   (unbind-key "TAB" yas-minor-mode-map)
-  
+
   (let ((my-snippets (concat user-emacs-directory "snippets")))
     (when (file-exists-p my-snippets)
       (add-to-list 'yas/snippet-dirs my-snippets))
     (yas-reload-all)))
 
-;; Flymake
+;;;; Flymake
 (setup-package flymake
   :diminish flymake-mode)
 
-;; Flycheck
+;;;; Flycheck
 (use-package flycheck
   :diminish " FC"
 
   :custom
-  (flycheck-check-syntax-automatically 
+  (flycheck-check-syntax-automatically
    '(mode-enabled new-line save) "Check on mode enabled, creating new line & save"))
 
 (put 'safe-local-variable-values 'flycheck-checker 'flycheck-ghc)
@@ -691,7 +811,7 @@ _l_: increase horizontally
   ("C-x g" . magit-status))
 
 ;;; Org-mode
-;; Org
+;;;; Org
 (use-package org
   :pin gnu
 
@@ -709,40 +829,41 @@ _l_: increase horizontally
    ("C-c M-RET" . org-insert-heading-after-current))
 
   :hook
-  (org-mode . variable-pitch-mode)
   (org-mode . yas-minor-mode)
   (org-mode . smartparens-mode)
   (org-mode . aggressive-indent-mode)
-  
+
   :custom
   (org-directory "~/org")
   (org-default-notes-file "~/org/notes.org")
+  (org-edit-src-content-indentstion 0)
+  (org-src-preserve-indentation t)
+  (org-adapt-indentation nil)
   (org-ellipsis "…")
   (org-enforce-todo-dependencies t)
+  (org-outline-path-complete-in-steps nil)
   (org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "DONE")))
   (org-startup-indented 1)
-  
+  (org-babel-python-command "python3")
+  (org-log-done t)
+
   :config
   (require 'ob-shell)
   (require 'ob-python)
   (require 'ob-haskell)
-
-  (defvar my-org-babel-langs
-    '((shell . t)
-      (emacs-lisp . t)
-      (python . t)
-      (haskell . t)))
+  
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (emacs-lisp . t)
+     (python . t)
+     (haskell . t)))
 
   (defun my-org-open-notes-file ()
     (interactive)
     (if (file-exists-p org-default-notes-file)
         (find-file org-default-notes-file)
-      (message "%s doesn't exist!" org-default-notes-file)))
-
-  (defun my/org-babel-load-langs ()
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     my/org-babel-langs)))
+      (message "%s doesn't exist!" org-default-notes-file))))
 
 (use-package org-appear
   :after (org)
@@ -762,3 +883,5 @@ _l_: increase horizontally
   :custom
   (org-bullets-bullet-list '("●" "○" "⦿" "⦾")))
 
+(use-package htmlize
+  :after (org))
