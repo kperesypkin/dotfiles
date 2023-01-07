@@ -46,7 +46,7 @@ URxvt.italicdFont: 		 xft:Hack:italic:pixelsize=16:antialias=true:hinting=true
 URxvt.boldItalicFont: 	 xft:Hack:bold italic:pixelsize=16:antialias=true:hinting=true
 URxvt.scrollBar:		 false
 URxvt.saveLines:		 65535
-URxvt.letterSpace:		 -1 
+URxvt.letterSpace:		 0
 URxvt.secondaryScreen:	 1
 URxvt.secondaryScroll:	 0
 URxvt.scrollTtyOutput:	 false
@@ -66,4 +66,6 @@ URxvt.underlineURLs:	 true
 URxvt.perl-ext-common:   default,tabbed
 Xft*dpi:       96
 Xft*antialias: True
-Xft*hinting:   Full
+Xft*hinting:   True
+Xft*hintstyle: hintfull
+Xft*lcdfilter: lcddefault

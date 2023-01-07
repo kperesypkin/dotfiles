@@ -1,0 +1,72 @@
+! -----------------------------------------------------------------------------
+! File: monokai_classic.xresources
+! Description: Monokai colorscheme generalized
+! Source: 
+! Last Modified: 06 Jan 2023
+! -----------------------------------------------------------------------------
+
+! Background
+URxvt.background: #272822
+! Foreground
+URxvt.foreground: #F8F8F2
+! Black + DarkGrey
+URxvt.color0:  #1B2229
+URXVT.color8:  #555556
+! DarkRed + Red
+URxvt.color1:  #E74C3C
+URxvt.color9:  #E74C3C
+! DarkGreen + Green
+URxvt.color2:  #A6E22E
+URxvt.color10: #A6E22E
+! DarkYellow + Yellow
+URxvt.color3:  #E6DB74
+URxvt.color11: #E6DB74
+! DarkBlue + Blue
+URxvt.color4:  #727280
+URxvt.color12: #268BD2
+! DarkMagenta + Magenta
+URxvt.color5:  #F92660
+URxvt.color13: #9C91E4
+! DarkCyan + Cyan
+URxvt.color6:  #8FA1B3
+URxvt.color14: #66D9EF
+! LightGrey + White
+URxvt.color7:  #CFC0C5
+URxvt.color15: #F8F8F2
+
+!Urxvt settings
+URxvt.title:             Terminal
+URxvt.iconFile:          /usr/share/icons/Yaru/48x48/apps/terminal-app.png
+URxvt.depth:		     24
+URxvt.termName:          xterm-256color
+Urxvt.buffered: 		 True
+URxvt.font:     		 xft:Fira Code:pixelsize=16:antialias=true:hinting=true
+URxvt.boldFont: 		 xft:Fira Code:bold:pixelsize=16:antialias=true:hinting=true
+URxvt.italicdFont: 		 xft:Fira Code:italic:pixelsize=16:antialias=true:hinting=true
+URxvt.boldItalicFont: 	 xft:Fira Code:bold italic:pixelsize=16:antialias=true:hinting=true
+URxvt.scrollBar:		 false
+URxvt.saveLines:		 65535
+URxvt.letterSpace:		 -1
+URxvt.secondaryScreen:	 1
+URxvt.secondaryScroll:	 0
+URxvt.scrollTtyOutput:	 false
+URxvt.scrollWithBuffer:	 true
+URxvt.scrollTtyKeypress: true
+URxvt.urgentOnBell:      false
+URxvt.visualBell:        false
+URxvt.cursorBlink:       true
+URxvt.cursorUnderline:   true
+URxvt.cursorColor:       #F92660
+URxvt.fading:            20
+URxvt.colorMode:         on
+URxvt.boldColors:        on
+URxvt.colorUL:           #E6DB74 
+URxvt.underlineColor:    #E6DB74
+URxvt.url-launcher:		 /usr/bin/firefox
+URxvt.underlineURLs:	 true
+!URxvt.perl-ext-common:   default,tabbed
+Xft*dpi:       96
+Xft*antialias: True
+Xft*hinting:   True
+Xft*hintstyle: hintfull
+Xft*lcdfilter: lcddefault
