@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+HISTCONTROL=ignoreboth
+
+# ignore cdms
+HISTIGNORE="l:ll:ls:ps:p:pm:m:df:history:h:hh:n:nls:nrm:nprint:np:ncat"
+
+# EMACS settings
+export TERM=xterm-256color
+export EDITOR='emacsclient -t'
+export VISUAL='emacsclient -c'
+
+# RUST environment
+source $HOME/.cargo/env
+
+# Virtualenvwrapper
+export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+source $HOME/.local/bin/virtualenvwrapper.sh
+
+# Python3
+export PYTHON=/usr/bin/python3
+
+# My projects directory
+export PROJECT_HOME=$HOME/projects
+
