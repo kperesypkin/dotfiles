@@ -1,17 +1,48 @@
-! -----------------------------------------------------------------------------
+! =============================================================================
 ! File: monokai_classic.xresources
 ! Description: Monokai colorscheme generalized
 ! Source: 
 ! Last Modified: 06 Jan 2023
-! -----------------------------------------------------------------------------
+!=============================================================================
+!                             Monikai colors
+!=============================================================================
+!MONIKAI     HEX                                XTERM/HEX  
+!=============================================================================
+!            gui       256       16               
+!=============================================================================
+! bg         #272822   nil       nil            236 / #272822
+! bg-alt     #1D1E19   nil       nil            235 / #1D1E19
+! base0      #1B2229   black     black          232 / #1B2229
+! base1      #161613   #101010   brightblack    233 / #101010
+! base2      #1D1F20   #191919   brightblack    234 / #191919
+! base3      #2D2E2E   #252525   brightblack    235 / #252525
+! base4      #4E4E4E   #454545   brightblack    239 / #454545
+! base5      #555556   #6B6B6B   brightblack    243 / #6B6B6B
+! base6      #767679   #7B7B7B   brightblack    245 / #7B7B7B
+! base7      #CFC0C5   #C1C1C1   brightblack    251 / #C1C1C1
+! base8      #FFFFFF   #FFFFFF   brightwhite     15 / #FFFFFF
+! fg         #F8F8F2   #DFDFDF   brightwhite    254 / #DFDFDF
+! fg-alt     #556172   #4D4D4D   white          255 / #4D4D4D
+! grey       #525254   #525254   brightblack    241 / #525254
+! red        #E74C3C   #E74C3C   red            160 / #E74C3C
+! orange     #FD971F   #FD971F   brightred      214 / #FD971F
+! green      #A6E22E   #A6E22E   green          148 / #A6E22E
+! yellow     #E6DB74   #E6DB74   yellow         221 / #E6DB74
+! blue       #268BD2   #268BD2   brightblue      75 / #268BD2
+! dark-blue  #727280   #727280   blue           102 / #727280
+! magenta    #F92660   #F92660   magenta        197 / #F92660
+! violet     #9C91E4   #9C91E4   brightmagenta  104 / #9C91E4
+! cyan       #66D9EF   #66D9EF   brightcyan      44 / #66D9EF
+! dark-cyan  #8FA1B3   #8FA1B3   cyan           146 / #8FA1B3
+!==============================================================================
 
 ! Background
 URxvt.background: #272822
 ! Foreground
-URxvt.foreground: #F8F8F2
+URxvt.foreground: #DFDFDF
 ! Black + DarkGrey
 URxvt.color0:  #1B2229
-URXVT.color8:  #555556
+URXVT.color8:  #6B6B6B
 ! DarkRed + Red
 URxvt.color1:  #E74C3C
 URxvt.color9:  #E74C3C
@@ -31,8 +62,8 @@ URxvt.color13: #9C91E4
 URxvt.color6:  #8FA1B3
 URxvt.color14: #66D9EF
 ! LightGrey + White
-URxvt.color7:  #CFC0C5
-URxvt.color15: #F8F8F2
+URxvt.color7:  #C1C1C1
+URxvt.color15: #DFDFDF
 
 !Urxvt settings
 URxvt.title:             Terminal
@@ -40,10 +71,10 @@ URxvt.iconFile:          /usr/share/icons/Yaru/48x48/apps/terminal-app.png
 URxvt.depth:		     24
 URxvt.termName:          xterm-256color
 Urxvt.buffered: 		 True
-URxvt.font:     		 xft:Fira Code:pixelsize=16:antialias=true:hinting=true
-URxvt.boldFont: 		 xft:Fira Code:bold:pixelsize=16:antialias=true:hinting=true
-URxvt.italicdFont: 		 xft:Fira Code:italic:pixelsize=16:antialias=true:hinting=true
-URxvt.boldItalicFont: 	 xft:Fira Code:bold italic:pixelsize=16:antialias=true:hinting=true
+URxvt.font:     		 xft:Fira Code:pixelsize=15:antialias=true:hinting=true
+URxvt.boldFont: 		 xft:Fira Code:bold:pixelsize=15:antialias=true:hinting=true
+URxvt.italicdFont: 		 xft:Fira Code:italic:pixelsize=15:antialias=true:hinting=true
+URxvt.boldItalicFont: 	 xft:Fira Code:bold italic:pixelsize=15:antialias=true:hinting=true
 URxvt.scrollBar:		 false
 URxvt.saveLines:		 65535
 URxvt.letterSpace:		 -1
@@ -64,7 +95,6 @@ URxvt.colorUL:           #E6DB74
 URxvt.underlineColor:    #E6DB74
 URxvt.url-launcher:		 /usr/bin/firefox
 URxvt.underlineURLs:	 true
-!URxvt.perl-ext-common:   default,tabbed
 Xft*dpi:       96
 Xft*antialias: True
 Xft*hinting:   True
