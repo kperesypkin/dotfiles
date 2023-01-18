@@ -1,0 +1,33 @@
+Config { font            = "Fira Code 11 "
+       , additionalFonts = [ "xft:Font Awesome 6 Free Solid:pixelsize=10"
+                           , "xft:Font Awesome 6 Brands:pixelsize=10"
+                           ]
+       , bgColor         = "#272822"
+       , fgColor         = "#DFDFDF"
+       , position        = TopW L 100 20
+       , lowerOnStart    = True
+       , hideOnStart     = False
+       , allDesktops     = True
+       , persistent      = True
+       , iconRoot        = ".config/xmobar/" -- default: "."
+       , commands = [ Run Com "echo" ["<fn=2>\xf233</fn>"] "mem" 3600
+                    , Run Memory ["-t", "Mem <usedratio>%"] 20
+                    , Run Com "echo" ["<fn=2>\xf0e4</fn>"] "dash" 3600
+                    , Run Cpu ["-t", "Cpu <total>%", "-H", "50", "--high", "#E74C3C"] 20
+                    , Run Com "echo" ["<fn=2>\xf241</fn>"] "bat" 3600
+                    , Run BatteryP ["BAT0"] ["-t", "<acstatus>", "-L", "20", "-H", "80", "-l", "#E74c3c", "-h", "#A6e22e", "--", "-O", "Charging", "-o", "<left>%"] 600
+                    , Run Wireless "" ["-t", "<fn=2>\xf1eb</fn>"] 50
+                    , Run Com "echo" ["<fn=2>\xf073</fn>"] "calendar" 3600
+                    -- , Run Com ".local/bin/check_updates" ["<fn=2>\xf021</fn>"] "updates" 0
+                    , Run Date "%d %b %Y %H:%M" "date" 50
+                    , Run Kbd [("us", "US"), ("ru", "RU")] 
+                    , Run XMonadLog
+                    ]
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = "<icon=haskell.xpm/> %XMonadLog% } <fc=#268BD2>%calendar%</fc> %date% {<action=`/home/kirill/.config/xmonad/layout_switch.sh` button=1>%kbd%</action> | <fc=#A6E22E>%bat%</fc> %battery% | %wi%"
+-- , template = "<icon=haskell.xpm/> %XMonadLog% } <fc=#268BD2>%calendar%</fc> %date% {<action=`/home/kirill/.config/xmonad/layout_switch.sh` button=1>%kbd%</action> | <fc=#E74C3C>%dash%</fc> %cpu% | <fc=#FD971F>%mem%</fc> %memory% | <fc=#A6E22E>%bat%</fc> %battery% | %wi%"
+}
+
+
+
