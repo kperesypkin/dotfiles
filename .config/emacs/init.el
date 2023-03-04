@@ -4,23 +4,35 @@
 
 ;;; Code:
 
-;;; Increase gc-limit up to ____ for boot speedup
-(setq gc-cons-threshold most-positive-fixnum)
-
 ;;; Start maximized
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;;; PATH
-(setenv "PYTHONPATH" "/usr/local/bin")
-(setenv "HOME" "/home/kirill")
+;; System-type definition
+(defun system-is-linux()
+  "Check if the system is GNU/linux."
+  (string-equal system-type "gnu/linux"))
 
-(mapc
- #'(lambda (p)
-     (when (file-directory-p p)
-       (add-to-list 'exec-path p)))
- '("~/.local/bin"
-   "~/.ghcup/bin"
-   "~/.stack/programs/x86_64-linux/ghc-tinfo6-9.0.2/bin"))
+(defun system-is-windows()
+  "Check if the system is Windows."
+  (string-equal system-type "windows-nt"))
+
+;; Start EMACS as a server in linux
+(when (system-is-linux)
+  (require 'server)
+  (unless (server-running-p)
+    (server-start)))
+
+;; Set PATH and exec-path variables
+(when (system-is-linux)
+  (let ((my/paths
+        '("/home/kirill/.local/bin"
+          "/home/kirill/.ghcup/bin"
+          "/home/kirill/.cabal/bin"
+          "/home/kirill/.cargo/bin")))
+    
+    (setenv "PATH" (concat (getenv "PATH") path-separator
+                           (mapconcat 'identity my/paths ":")))
+    (setq exec-path (append my/paths exec-path))))
 
 ;;; Make a shortcut for init.el
 ;;; and a reload function
@@ -84,11 +96,14 @@
   (auto-package-update-maybe))
 
 (use-package diminish)
+
 (use-package gcmh
+  :demand 
+
   :diminish
 
-  :init
-  (add-hook 'after-init-hook 'gcmh-mode))
+  :config
+  (gcmh-mode 1))
 
 ;;;; Simple use-package wrapper
 (defmacro def-package (name &rest body)
@@ -166,11 +181,11 @@
   ;;        kill-emacs-query-functions))
 
   :config
-  (setq global-prettify-symbols-mode nil)
+  (setq global-prettify-symbols-mode t)
   (setq default-cursor-type 'bar)
   (prefer-coding-system 'utf-8)
   (put 'overwrite-mode 'disabled t)
-
+ 
   :hook
   (before-save-hook . delete-trailing-whitespace))
 
@@ -185,7 +200,7 @@
   :diminish (buffer-face-mode "")
 
   :preface
-  (setq my/font-height (if (string-equal system-type "gnu/linux") 130 120))
+  (setq my/font-height (if (system-is-linux) 110 10))
 
   :custom
   (face-font-family-alternatives
@@ -198,13 +213,17 @@
   (mode-line ((t (:height 0.8))))
   (mode-line-inactive ((t (:height 0.8)))))
 
+;;;; Subword-mode
+(setup-package subword
+  :diminish)
+
 ;;;; Whitespaces
 (setup-package whitespace
   :diminish
 
   :preface
   (defun my/whitespace-prog-mode ()
-    "whitespace mode for prog buffers"
+    "Whitespace mode for prog buffers."
     (setq-local whitespace-style '(face lines-tail tab-mark))
     (setq-local whitespace-line-column 80)
     (setq-local truncate-lines t)
@@ -259,12 +278,6 @@
 (use-package comment-dwim-2
   :bind
   ("M-;" . comment-dwim-2))
-
-;;;; Indentation
-(use-package aggressive-indent
-  :commands (aggressive-indent-mode)
-
-  :diminish " AI")
 
 ;;;; Quotes
 (use-package cycle-quotes
@@ -323,7 +336,7 @@
   (global-auto-revert-mode t))
 
 ;;;; Change windows size
-(def-package my-window-sizing
+(def-package my/window-sizing
   :preface
   (defhydra hydra-window-sizing (:hint nil)
     "
@@ -371,25 +384,25 @@ _l_: increase horizontally
   (doom-themes-org-config))
 
 ;;;; Modeline
-;; (use-package doom-modeline
-;;   :hook (after-init . doom-modeline-mode))
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode))
 
-(use-package simple-modeline
-  :hook
-  (after-init . simple-modeline-mode))
+;; (use-package simple-modeline
+;;   :hook
+;;   (after-init . simple-modeline-mode))
 
 ;;; Parens & delimiters
 ;;;; SmartParens & wrapping
 (use-package smartparens
-  :diminish " SP"
+  :diminish
 
   :preface
-  (defun my-no-electric-with-startparens ()
+  (defun my/no-electric-with-startparens ()
     "Disables electric parens with smartparens enabled"
     (electric-pair-local-mode -1))
 
   :hook
-  (smartparens-mode . my-no-electric-with-startparens)
+  (smartparens-mode . my/no-electric-with-startparens)
 
   :bind
   
@@ -446,7 +459,7 @@ _l_: increase horizontally
   :custom
   (hl-todo-keyword-faces
    '(("TODO" . "#6c71c4")
-     ("FIXME" . "#dc322f")
+     ("FIXME" . "#e74c3c")
      ("NOTE" . "#2aa198")))
 
   :hook
@@ -460,24 +473,81 @@ _l_: increase horizontally
   :diminish)
 
 ;;; Languages
-;;;; LSP Eglot
-(use-package eglot
-  :commands (eglot)
+;;;; LSP
+(use-package lsp-mode
+  :diminish " LSP"
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((python-mode . lsp)
+         (haskell-mode . lsp)
+         (rust-mode . lsp)
+         (racket-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
-  :config
-  (add-to-list 'eglot-server-programs
-               '(python-mode . ("pylsp")))
+(use-package lsp-ui
+  :commands lsp-ui-mode)
 
-  :hook
-  (python-mode . eglot-ensure)
-  (rust-mode . eglot-ensure)
-  (haskell-mode . eglot-ensure))
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
+
+(use-package lsp-pyright
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))
+
+(use-package lsp-haskell
+  :hook ((haskell-mode . (lambda ()
+                          (require 'lsp-haskell)
+                          (lsp)))
+         (literate-haskell-mode . (lambda ()
+                                    (require 'lsp-haskell)
+                                    (lsp)))))
 
 ;;;; ELisp
 (setup-package elisp-mode
   :hook
-  (emacs-lisp-mode . eldoc-mode)
-  (emacs-lisp-mode . aggressive-indent-mode))
+  (emacs-lisp-mode . eldoc-mode))
+
+;;;; Haskell
+(use-package haskell-mode
+  :diminish " >>="
+
+  :mode
+  ("\\.hs\\'" . haskell-mode)
+  ("\\.lhs\\'" . literate-haskell-mode)
+  
+  :hook
+  (haskell-mode . haskell-decl-scan-mode)
+  (haskell-mode . subword-mode)
+  (haskell-mode . eldoc-mode)
+  (haskell-mode . smartparens-mode)
+  (haskell-mode . interactive-haskell-mode))
+
+(put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
+(put 'haskell-hayoo-url 'safe-local-variable #'stringp)
+
+(use-package inf-haskell
+  :ensure nil)
+
+;;;; Racket
+(use-package racket-mode
+  :mode
+  ("\\.rkt\\'" . racket-mode)
+
+  :config
+  (require 'racket-xp)
+  
+  :hook
+  (racket-mode . smartparens-mode)
+  (racket-mode . eldoc-mode)
+  (racket-mode . racket-xp-mode))
+
+;;;; Scheme
+(setup-package scheme-mode
+  :mode
+  ("\\.scm$" . scheme-mode))
 
 ;;;; Python
 (use-package python
@@ -486,27 +556,20 @@ _l_: increase horizontally
 
   :hook
   (python-mode . smartparens-mode)
+  (python-mode . eldoc-mode)
   (python-mode . flycheck-mode)
-  ;(python-mode . aggressive-indent-mode)
-
+  (python-mode . anaconda-mode)
+  (python-mode . anaconda-eldoc-mode)
+  
   :config
   (setq-default python-indent-offset 4))
 
-(use-package pyvenv
-  :config
-  (progn
-    (defalias 'workon 'pyvenv-workon)
-    (defalias 'activate 'pyvenv-activate)
-    (defalias 'deactivate 'pyvenv-deactivate))
-  (pyvenv-mode t)
+(use-package anaconda-mode
+  :diminish anaconda-mode)
 
-  ;; Set correct Python interpreter
-  (setq pyvenv-post-activate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
-  (setq pyvenv-post-deactivate-hooks
-        (list (lambda ()
-                (setq python-shell-interpreter "python3")))))
+(use-package company-anaconda
+  :after (company anaconda)
+  :init (add-to-list 'company-backends 'company-anaconda))
 
 (use-package py-autopep8
   :hook
@@ -519,30 +582,27 @@ _l_: increase horizontally
   :config
   (setq py-isort-options '("-sl")))
 
-;;;; Haskell
-(use-package haskell-mode
-  :diminish haskell-mode
+(use-package pyvenv
+  :config
+  (progn
+    (defalias 'workon 'pyvenv-workon)
+    (defalias 'activate 'pyvenv-activate)
+    (defalias 'deactivate 'pyvenv-deactivate))
+  (pyvenv-mode t)
+  
+  ;; Set correct Python interpreter
+  (setq pyvenv-post-activate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
+  (setq pyvenv-post-deactivate-hooks
+        (list (lambda ()
+                (setq python-shell-interpreter "python3")))))
 
-  :magic
-  (".*env stack" . haskell-mode)
-
+;;;; Ruby
+(setup-package ruby-mode
   :mode
-  ("\\.hs\\'" . haskell-mode)
-  ("\\.lhs\\'" . literate-haskell-mode)
-
-  :hook
-  (haskell-mode . haskell-decl-scan-mode)
-  (haskell-mode . subword-mode)
-  (haskell-mode . eldoc-mode)
-  (haskell-mode . smartparens-mode)
-  (haskell-mode . my/boot-haskell)
-  (haskell-mode . interactive-haskell-mode))
-
-(put 'haskell-stylish-on-save 'safe-local-variable #'booleanp)
-(put 'haskell-hayoo-url 'safe-local-variable #'stringp)
-
-(use-package inf-haskell
-  :ensure nil)
+  ("\\.\\(?:cap\\|gemspec\\|irbrc\\|gemrc\\|rake\\|rb\\|ru\\|thor\\)\\'" . ruby-mode)
+  ("\\(?:Brewfile\\|Capfile\\|Gemfile\\(?:\\.[a-zA-Z0-9._-]+\\)?\\|[rR]akefile\\)\\'" . ruby-mode))
 
 ;;;; Rust
 (use-package rust-mode
@@ -556,10 +616,10 @@ _l_: increase horizontally
   :after (rust-mode)
 
   :hook
-  (rust-mode . my-rust-mode-hook)
+  (rust-mode . my/rust-mode-hook)
 
   :config
-  (defun my-rust-mode-hook ()
+  (defun my/rust-mode-hook ()
     (flycheck-rust-setup)
     (flycheck-mode)))
 
@@ -774,9 +834,9 @@ _l_: increase horizontally
   (unbind-key "<tab>" yas-minor-mode-map)
   (unbind-key "TAB" yas-minor-mode-map)
 
-  (let ((my-snippets (concat user-emacs-directory "snippets")))
-    (when (file-exists-p my-snippets)
-      (add-to-list 'yas/snippet-dirs my-snippets))
+  (let ((my/snippets (concat user-emacs-directory "snippets")))
+    (when (file-exists-p my/snippets)
+      (add-to-list 'yas/snippet-dirs my/snippets))
     (yas-reload-all)))
 
 ;;;; Flymake
@@ -818,7 +878,7 @@ _l_: increase horizontally
   :mode ("\\.org\\'" . org-mode)
 
   :bind
-  ("<f12>" . my-org-open-notes-file)
+  ("<f12>" . my/org-open-notes-file)
   (:map
    mode-specific-map
    ("C" . org-capture)
@@ -831,8 +891,7 @@ _l_: increase horizontally
   :hook
   (org-mode . yas-minor-mode)
   (org-mode . smartparens-mode)
-  (org-mode . aggressive-indent-mode)
-
+  
   :custom
   (org-directory "~/org")
   (org-default-notes-file "~/org/notes.org")
@@ -859,7 +918,7 @@ _l_: increase horizontally
      (python . t)
      (haskell . t)))
 
-  (defun my-org-open-notes-file ()
+  (defun my/org-open-notes-file ()
     (interactive)
     (if (file-exists-p org-default-notes-file)
         (find-file org-default-notes-file)

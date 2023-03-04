@@ -29,6 +29,11 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# ~/.bash_profile
+if [ -f ~/.bash_profile ]; then
+    . ~/.bash_profile
+fi
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -70,7 +75,7 @@ else
         # user@host
 		if [ $(id -u) -eq 0 ]; then
 			PS1+="\[\033[1;48;5;234;38;5;160m\] \\u \[\033[0;48;5;234;38;5;255m\]at \[\033[1;48;5;234;38;5;44m\]\\h\[\033[0m\]"
-            PSCHAR="\[\033[1;38;5;160m\] #\033[0m\]"
+            PSCHAR="\[\033[1;38;5;160m\] #\033[0m\] "
 		else
 			PS1+="\[\033[1;48;5;234;38;5;148m\] \\u \[\033[0;48;5;234;38;5;255m\]at \[\033[1;48;5;234;38;5;44m\]\\h\[\033[0m\]"
 		fi
@@ -89,19 +94,19 @@ else
 			fi
 		fi
 		# line two
-		PS1+="\n${PSCHAR}"
+		PS1+="\n${PSCHAR} "
 
 		# ssh
 		if [[ -n "${SSH_CLIENT}" ]]; then
-			PS1+="(\[\033[1;48;5;234;38;5;148m\]SSH\[\033[0m\])-"
+			PS1+="(\[\033[1;48;5;234;38;5;148m\]SSH\[\033[0m\])- "
 		fi
 		# chroot
 		if [[ -n "${debian_chroot}" ]]; then
-			PS1+="('\[\033[38;5;255m\]'${debian_chroot}\[\033[0m\])-"
+			PS1+="('\[\033[38;5;255m\]'${debian_chroot}\[\033[0m\])- "
 		fi
 		# venv
 		if [[ -n "$VIRTUAL_ENV" ]]; then
-			PS1+="(\[\033[38;5;214m\]${VIRTUAL_ENV##*/}\[\033[0m\])─"
+			PS1+="(\[\033[38;5;214m\]${VIRTUAL_ENV##*/}\[\033[0m\])─ "
 			VIRTUAL_ENV_DISABLE_PROMPT=1
 		fi
 		# $ for user, # for root

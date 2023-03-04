@@ -13,18 +13,37 @@ export TERM=xterm-256color
 export EDITOR='emacsclient -t'
 export VISUAL='emacsclient -c'
 
-# RUST environment
-source $HOME/.cargo/env
-
 # Virtualenvwrapper
+# require virtualenv & virtualenvwrapper
+# 'apt install python3-virtualenv' and 'pip3 install virtualenvwrapper' 
 export VIRTUALENVWRAPPER_VIRTUALENV=$HOME/.local/bin/virtualenv
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-source $HOME/.local/bin/virtualenvwrapper.sh
+[ -f "$HOME/.local/bin/virtualenvwrapper.sh" ] && source $HOME/.local/bin/virtualenvwrapper.sh
 
 # Python3
 export PYTHON=/usr/bin/python3
 
 # My projects directory
-export PROJECT_HOME=$HOME/projects
+if [ -d "$HOME/projects/" ]; then
+    PROJECT_HOME="$HOME/projects"
+fi
 
+# .local/bin
+if [ -d "$HOME/.local/bin/" ]; then
+    PATH="$HOME/.local/bin/:$PATH"
+fi
+
+# RUST environment
+if [ -d "$HOME/.cargo/env " ]; then
+    PATH="$HOME/.cargo/env/:$PATH"
+fi
+
+# Haskell GHC through ghcup
+if [ -d "$HOME/.ghcup/bin" ]; then
+    PATH="$HOME/.ghcup/bin:$PATH"
+fi
+
+if [ -d "$HOME/.cabal/bin" ]; then
+    PATH="$HOME/.cabal/bin:$PATH"
+fi
