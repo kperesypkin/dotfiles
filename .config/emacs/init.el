@@ -28,7 +28,8 @@
         '("/home/kirill/.local/bin"
           "/home/kirill/.ghcup/bin"
           "/home/kirill/.cabal/bin"
-          "/home/kirill/.cargo/bin")))
+          "/home/kirill/.cargo/bin"
+          "/home/kirill/.nimble/bin")))
     
     (setenv "PATH" (concat (getenv "PATH") path-separator
                            (mapconcat 'identity my/paths ":")))
@@ -483,6 +484,7 @@ _l_: increase horizontally
          (haskell-mode . lsp)
          (rust-mode . lsp)
          (racket-mode . lsp)
+         (nim-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -622,6 +624,9 @@ _l_: increase horizontally
   (defun my/rust-mode-hook ()
     (flycheck-rust-setup)
     (flycheck-mode)))
+
+;;;; Nim
+(use-package nim-mode)
 
 ;;;; Markdown
 (use-package markdown-mode

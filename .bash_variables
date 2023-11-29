@@ -45,5 +45,9 @@ if [ -d "$HOME/.ghcup/bin" ]; then
 fi
 
 if [ -d "$HOME/.cabal/bin" ]; then
-    PATH="$HOME/.cabal/bin:$PATH"
+    PATH="$HOME/.cabal/bin/:$PATH"
+fi
+
+if [ -d "$HOME/.nimble/bin" ]; then
+    PATH="$HOME/.nimble/bin/:$PATH"
 fi

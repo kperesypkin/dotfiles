@@ -123,16 +123,8 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
-
-" Deoplete autocomplete plugin
-"if has('nvim')
-"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-"endif
-"
+Plug 'Yggdroot/indentLine'
+Plug 'liuchengxu/vista.vim'
 
 " Colorschemes
 Plug 'morhetz/gruvbox'
@@ -143,7 +135,9 @@ call plug#end()
 
 " PLUGINS CONFIGURATION --------------------------------------------------{{{
 " ALE config
-let g:ale_linters = {'python': 'all'}
+let g:ale_linters = {
+            \ 'python': 'all',
+            \ 'go': ['gopls']}
 let g:ale_fixers = {'python':['isort', 'yapf', 'remove_trailing_lines', 'trim_whitespace']}
 let g:ale_lsp_suggestions = 1
 let g:ale_fix_on_save = 1
@@ -152,14 +146,15 @@ let g:ale_go_gometalinter_options = '— enable=gosimple — enable=staticcheck'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] [%severity%] %code: %%s'
-let g:ale_virtualenv_dir_names = ['env']
+let g:ale_virtualenv_dir_names = ['env', 'venv', 'virtualenv']
 let g:ale_completion_enabled = 1
 let g:ale_completion_autoimport = 1
 set completeopt=menu,menuone,preview,noselect,noinsert
 
-" Deoplete config
-let g:deoplete#enable_at_startup = 1
-
+" IndentLine config
+let g:indentLine_enabled = 1
+"let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+"let g:indentLine_setColors = 0
 
 " }}}
 
