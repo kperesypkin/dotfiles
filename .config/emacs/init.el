@@ -385,12 +385,12 @@ _l_: increase horizontally
   (doom-themes-org-config))
 
 ;;;; Modeline
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode))
-
-;; (use-package simple-modeline
-;;   :hook
-;;   (after-init . simple-modeline-mode))
+;;(use-package doom-modeline
+;;  :hook (after-init . doom-modeline-mode))
+;;
+(use-package simple-modeline
+  :hook
+  (after-init . simple-modeline-mode))
 
 ;;; Parens & delimiters
 ;;;; SmartParens & wrapping
@@ -644,6 +644,43 @@ _l_: increase horizontally
 
   :custom
   (markdown-header-scaling t))
+
+;;;; HTML
+(use-package web-mode
+    :commands (web-mode)
+
+    :mode
+    ("\\.html?\\'" . web-mode)
+    ("\\.css\\'" . web-mode)
+
+    :preface
+    (defun my/web-mode-hook ()
+      (add-hook 'hack-local-variables-hook
+                (defun my/web-mode-local-hook ()
+                  (when web-mode-engines-alist
+                    (web-mode-guess-engine-and-content-type)
+                    (unless (string= web-mode-engine "none")
+                      (web-mode-set-engine web-mode-engine))))
+                0 t))
+
+    :hook
+    (web-mode . company-mode)
+    (web-mode . my/web-mode-hook)
+
+    :custom
+    (web-mode-enable-css-colorization t)
+    (web-mode-enable-engine-detection nil)
+    (web-mode-code-indent-offset 2)
+    (web-mode-markup-indent-offset 2)
+    (web-mode-script-padding 2)
+    (web-mode-css-indent-offset 2)
+    (web-mode-style-padding 2)
+
+    :config
+    (add-to-list 'company-backends 'company-css))
+
+  (put 'web-mode-engine 'safe-local-variable #'stringp)
+  (put 'web-mode-engines-alist 'safe-local-variable #'listp)
 
 ;;;; TOML
 (use-package toml-mode
