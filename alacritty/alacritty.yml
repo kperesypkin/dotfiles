@@ -1,0 +1,161 @@
+# Window configuration
+window:
+  dimensions:
+    columns: 80
+    lines: 24
+  position:
+    x: 20
+    y: 35
+  padding:
+    x: 6
+    y: 6
+  dynamic_padding: false
+  decorations: full
+  title: Alacritty
+  class:
+    instance: Alacritty
+    general: Alacritty
+
+# Scrolling
+scrolling:
+  history: 5000
+  multiplier: 3
+
+# Font configuration
+font:
+  normal:
+    family: Fira Code
+    style: normal
+  bold:
+    family: Fira Code
+    style: bold
+  italic:
+    family: Fira Code
+    style: italic
+
+  # Point size of the font
+  size: 10
+
+  # Offset is the extra space around each character. offset.y can be thought of
+  # as modifying the linespacing, and offset.x as modifying the letter spacing.
+  offset:
+    x: 0
+    y: 0
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increase the x offset to move the glyph to
+  # the right, increase the y offset to move the glyph upward.
+  glyph_offset:
+    x: 0
+    y: 0
+
+# When true, bold text is drawn using the bright variant of colors.
+draw_bold_text_with_bright_colors: true
+
+# Use custom cursor colors. If true, display the cursor in the cursor.foreground
+# and cursor.background colors, otherwise invert the colors of the cursor.
+custom_cursor_colors: true
+
+# Colors and theme configuration
+colors:
+  name: gruvbox
+  author: ""
+  primary:
+    background: "0x282828"
+    foreground: "0xebdbb2"
+  cursor:
+    text: CellBackground
+    cursor: CellForeground
+  vi_mode_cursor:
+    text: CellBackground
+    cursor: CellForeground
+  search:
+    matches:
+      foreground: "0x504945"
+      background: "0xfabd2f"
+    focused_match:
+      foreground: "0x504945"
+      background: "0xfe8019"
+  footer_bar:
+    background: "0x282828"
+    foreground: "0xebdbb2"
+  hints:
+    start:
+      foreground: "0xd79921"
+      background: "0x282828"
+    end:
+      foreground: "0x282828"
+      background: "0xd79921"
+  line_indicator:
+    foreground: None
+    background: None
+  selection:
+    text: CellForeground
+    background: "0x504945"
+  normal:
+    black: "0x282828"
+    red: "0xcc241d"
+    green: "0x98971a"
+    yellow: "0xd79921"
+    blue: "0x458588"
+    magenta: "0xb16286"
+    cyan: "0x689d6a"
+    white: "0xa89984"
+  bright:
+    black: "0x928374"
+    red: "0xfb4934"
+    green: "0xb8bb26"
+    yellow: "0xfabd2f"
+    blue: "0x83a598"
+    magenta: "0xd3869b"
+    cyan: "0x8ec07c"
+    white: "0xebdbb2"
+
+# Cursor style
+cursor:
+  # Values for `style`:
+  #   - ▇ Block
+  #   - _ Underline
+  #   - | Beam
+  style: Block
+  unfocused_hollow: true
+
+# Visual Bell
+#
+# Any time the BEL code is received, Alacritty "rings" the visual bell. Once
+# rung, the terminal background will be set to white and transition back to the
+# default background color. You can control the rate of this transition by
+# setting the `duration` property (represented in milliseconds). You can also
+# configure the transition function by setting the `animation` property.
+#
+# Possible values for `animation`
+# `Ease`
+# `EaseOut`
+# `EaseOutSine`
+# `EaseOutQuad`
+# `EaseOutCubic`
+# `EaseOutQuart`
+# `EaseOutQuint`
+# `EaseOutExpo`
+# `EaseOutCirc`
+# `Linear`
+#
+# To completely disable the visual bell, set its duration to 0.
+#
+bell:
+  animation: EaseOut
+  color: '0xfb4934'
+  duration: 0
+
+# Startup directory
+working_directory: None
+
+# Key bindings
+key_bindings:
+  - { key: V,        mods: Control,       action: Paste            }
+  - { key: C,        mods: Control,       action: Copy             }
+  - { key: Insert,   mods: Control,       action: Copy             }
+  - { key: Insert,   mods: Shift,         action: PasteSelection   }
+  - { key: Key0,     mods: Control,       action: ResetFontSize    }
+  - { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Minus,    mods: Control,       action: DecreaseFontSize }

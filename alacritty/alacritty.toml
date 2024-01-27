@@ -1,0 +1,30 @@
+import = [
+"~/.config/alacritty/zenburn.toml",
+]
+
+[shell]
+program = "/bin/bash"
+args = ["-i"]
+
+[window]
+dimensions = { columns = 120, lines = 36 }
+padding.x = 5
+padding.y = 5
+dynamic_padding = true
+decorations = "Full"
+decorations_theme_variant = "Dark"
+startup_mode = "Windowed"
+
+[scrolling]
+history = 10000
+multiplier = 5
+
+[font]
+normal.family = "Fira Code"
+bold.family = "Fira Code"
+italic.family = "Fira Code"
+bold_italic.family = "Fira Code"
+size = 11
+
+[cursor]
+style = { shape = "Underline" , blinking = "On" }
