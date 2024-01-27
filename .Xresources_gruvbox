@@ -40,13 +40,13 @@ URxvt.title:             Terminal
 URxvt.iconFile:          /usr/share/icons/Yaru/48x48/apps/terminal-app.png
 URxvt.depth:		     24
 Urxvt.buffered: 		 True
-URxvt.font:     		 xft:Hack:pixelsize=16:antialias=true:hinting=true
-URxvt.boldFont: 		 xft:Hack:bold:pixelsize=16:antialias=true:hinting=true
-URxvt.italicdFont: 		 xft:Hack:italic:pixelsize=16:antialias=true:hinting=true
-URxvt.boldItalicFont: 	 xft:Hack:bold italic:pixelsize=16:antialias=true:hinting=true
+URxvt.font:     		 xft:Fira Code:pixelsize=15:antialias=true:hinting=true
+URxvt.boldFont: 		 xft:Fira Code:bold:pixelsize=15:antialias=true:hinting=true
+URxvt.italicdFont: 		 xft:Fira Code:italic:pixelsize=15:antialias=true:hinting=true
+URxvt.boldItalicFont: 	 xft:Fira Code:bold italic:pixelsize=15:antialias=true:hinting=true
 URxvt.scrollBar:		 false
 URxvt.saveLines:		 65535
-URxvt.letterSpace:		 0
+URxvt.letterSpace:		 -1
 URxvt.secondaryScreen:	 1
 URxvt.secondaryScroll:	 0
 URxvt.scrollTtyOutput:	 false
@@ -56,14 +56,14 @@ URxvt.urgentOnBell:      false
 URxvt.visualBell:        false
 URxvt.cursorBlink:       true
 URxvt.cursorUnderline:   true
+URxvt.cursorColor:       #F92660
 URxvt.fading:            20
 URxvt.colorMode:         on
 URxvt.boldColors:        on
-URxvt.colorUL:           #d79921 
-URxvt.underlineColor:    #d79921
+URxvt.colorUL:           #E6DB74 
+URxvt.underlineColor:    #E6DB74
 URxvt.url-launcher:		 /usr/bin/firefox
 URxvt.underlineURLs:	 true
-URxvt.perl-ext-common:   default,tabbed
 Xft*dpi:       96
 Xft*antialias: True
 Xft*hinting:   True
