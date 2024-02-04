@@ -57,30 +57,31 @@ else
 		local blue='\[\033[1;38;5;102m\]'
 		local magenta='\[\033[38;5;197m\]'
 		local cyan='\[\033[38;5;44m\]'
-        local dark_cyan='\[\033[38;5;m146\]'
+        local dark_cyan='\[\033[38;5;146m\]'
 		local white='\[\033[38;5;255m\]'
         local orange='\[\033[38;5;214m\]'
 		local bblue='\[\033[38;5;75m\]'
 
 		# first line
-		PS1="\[\033[0m\]\n"
+		PS1="\[\033[0m\]" #\n"
         # exit code
 		if [ $EXIT != 0 ]; then
-			PS1+="\[\033[1;48;5;234;38;5;160m\] ${ERROR}${EXIT}\\033[0m\]"
+			PS1+="\[\033[38;5;160m\] ${ERROR}${EXIT}\\033[0m\]"
         else    
-            PS1+="\[\033[1;48;5;234;38;5;148m\] ${OK}\\033[0m\]"
+            PS1+="\[\033[38;5;148m\] ${OK}\\033[0m\]"
 		fi
         # datetime 
-		PS1+="\[\033[0;48;5;234;38;5;255m\] `date +%H:%M:%S`\[\033[0m\]"
+		PS1+="\[\033[38;5;255m\] `date +%H:%M:%S`\[\033[0m\]"
         # user@host
 		if [ $(id -u) -eq 0 ]; then
-			PS1+="\[\033[1;48;5;234;38;5;160m\] \\u \[\033[0;48;5;234;38;5;255m\]at \[\033[1;48;5;234;38;5;44m\]\\h\[\033[0m\]"
+			PS1+="\[\033[38;5;160m\] \\u \[\033[38;5;255m\]at \[\033[38;5;44m\]\\h\[\033[0m\]"
             PSCHAR="\[\033[1;38;5;160m\] #\033[0m\] "
 		else
-			PS1+="\[\033[1;48;5;234;38;5;148m\] \\u \[\033[0;48;5;234;38;5;255m\]at \[\033[1;48;5;234;38;5;44m\]\\h\[\033[0m\]"
+			PS1+="\[\033[38;5;148m\] \\u \[\033[38;5;255m\]at \[\033[38;5;44m\]\\h\[\033[0m\]"
 		fi
 		# working directory
-		PS1+="\[\033[0;48;5;234;38;5;255m\] in \[\033[1;48;5;234;38;5;75m\]\\w\[\033[0m\]"
+		# PS1+="\[\033[0;48;5;234;38;5;255m\] in \[\033[1;48;5;234;38;5;75m\]\\w\[\033[0m\]"
+        PS1+="\[\033[38;5;255m\] in \[\033[38;5;75m\]\\w\[\033[0m\]"
 		# git
 		if [[ -n "$(command -v __git_ps1)" ]]; then
 			local fstype="$(df --output=fstype . | tail -n +2)"
@@ -98,7 +99,7 @@ else
 
 		# ssh
 		if [[ -n "${SSH_CLIENT}" ]]; then
-			PS1+="(\[\033[1;48;5;234;38;5;148m\]SSH\[\033[0m\])- "
+			PS1+="(\[\033[38;5;148m\]SSH\[\033[0m\])- "
 		fi
 		# chroot
 		if [[ -n "${debian_chroot}" ]]; then
@@ -128,7 +129,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-force_color_prompt=yes
+#force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
